@@ -68,7 +68,11 @@ class NewsletterByID(Resource):
 
     def get(self, id):
 
-        response_dict = Newsletter.query.filter_by(id=id).first().to_dict()
+        newsletter = Newsletter.query.filter_by(id=id).first()
+        if newsletter is None:
+            return {'error': 'Newsletter not found'}, 404
+
+        response_dict = newsletter.to_dict()
 
         response = make_response(
             response_dict,
